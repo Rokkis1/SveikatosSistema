@@ -39,7 +39,6 @@ namespace SveikatosSistema
         private void btnSave_Click(object sender, EventArgs e)
         {
             double average = 0;
-
             string temp = comboBox1.Text.ToString();
             string work = comboBox1.Text.ToString();
             if (Convert.ToDouble(temp) > 10 || Convert.ToDouble(temp) < 1) //ar verta realizuoti papildoma patikra, kad parinkta reiksme yra skaicius
