@@ -133,7 +133,7 @@ namespace SveikatosSistema
                          };
             var q = indeksai.GroupBy(x => x.date)
             .Select(g => new { Value = g.Key, Count = g.Count() })
-            .OrderByDescending(x => x.Count);
+            .OrderByDescending(x => DateTime.ParseExact(x.Value, "dd.MM.yyyy", null));
             foreach (var x in q)
             {
                 foreach (var y in result)
@@ -183,19 +183,20 @@ namespace SveikatosSistema
                          };
             var q = indeksai.GroupBy(x => x.date)
             .Select(g => new { Value = g.Key, Count = g.Count() })
-            .OrderByDescending(x => x.Count);
+            .OrderByDescending(x => DateTime.ParseExact(x.Value, "dd.MM.yyyy", null));
             foreach (var x in q)
             {
                 foreach (var y in result)
                 {
                     if (x.Value == y.Date)
                     {
-                        chart1.Series["Individualus vidurkis"].Points.AddXY(x.Value, y.Sum / x.Count);
+                            chart1.Series["Individualus vidurkis"].Points.AddY(y.Sum / x.Count);
                     }
                 }
             }
-        }
 
+        }
+        
     }
     public class Indeksai
     {

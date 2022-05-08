@@ -86,7 +86,7 @@ namespace SveikatosSistema
 
             string MySQLConnetionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=usersdb";
 
-            String selectQuery = @"SELECT Vardas, Pavardė, Slapyvardis, Gimimo_data, VartotojoNR  FROM registeredusers";
+            String selectQuery = @"SELECT Slapyvardis, Gimimo_data, VartotojoNR  FROM registeredusers";
             MySqlConnection databaseConnection = new MySqlConnection(MySQLConnetionString);
             try
             {

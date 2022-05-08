@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -47,7 +48,7 @@ namespace SveikatosSistema
                             {
                                 if (password == passwordrepeated)
                                 {
-                                    string hash = CreateMD5Hash(password);
+                                    string hash = SHA_256Hash(password);
                                     save(name, surname, formatted, username, hash);
                                     MessageBox.Show("Sukurta sėkmingai");
                                     this.Hide();
@@ -88,19 +89,21 @@ namespace SveikatosSistema
                 MessageBox.Show("Neįvestas vardas arba pavardė!");
             }
         }
-        public string CreateMD5Hash(string input)
+        public string SHA_256Hash(string input)
         {
-            System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-            byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hashBytes.Length; i++)
+            using (SHA256 sha256Hash = SHA256.Create())
             {
-                sb.Append(hashBytes[i].ToString("X2"));
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes("kisonas1"));
+
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
             }
-            return sb.ToString();
         }
+
         public bool UserValidator(string username)
         {
             string MySQLConnetionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=usersdb";

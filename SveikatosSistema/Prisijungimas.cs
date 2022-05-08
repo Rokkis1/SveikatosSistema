@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Security.Cryptography;
 
 namespace SveikatosSistema
 {
@@ -28,7 +29,7 @@ namespace SveikatosSistema
         {
             username = LoginName.Text;
             password = PasswordName.Text;
-            string hash = CreateMD5Hash(password);
+            string hash = SHA_256Hash(password);
             Boolean validator;
             validator = Userlogin(username, hash);
             string userid = UserloginID(username, hash);
@@ -88,19 +89,21 @@ namespace SveikatosSistema
                 MessageBox.Show("Blogai įvestas slaptažodis arba slapyvardis");
             }
         }
-        public string CreateMD5Hash(string input)
+        public string SHA_256Hash(string input)
         {
-            System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-            byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hashBytes.Length; i++)
+            using (SHA256 sha256Hash = SHA256.Create())
             {
-                sb.Append(hashBytes[i].ToString("X2"));
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes("kisonas1"));
+ 
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
             }
-            return sb.ToString();
         }
+
         public bool Userlogin(string username, string password)
         {
             string MySQLConnetionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=usersdb";

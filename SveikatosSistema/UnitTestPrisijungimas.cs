@@ -24,7 +24,7 @@ namespace SveikatosSistema
         public void TestisAdmintrue()
         {
             string username = "IHMondays";
-            string password = "EE97F9A911A6CE104036DADB183653C5";
+            string password = "e24af509ba74471fef73aa95c3e58388d0d9252e90677a21d3807bb01cd52144";
 
             Assert.AreEqual(prisijungimas.IsAdmin(username, password), "1");
 
@@ -33,7 +33,7 @@ namespace SveikatosSistema
         public void TestisAdminRegularUser()
         {
             string username = "IHM";
-            string password = "0B2DD73369A685A3C76DE3245705FC75";
+            string password = "e24af509ba74471fef73aa95c3e58388d0d9252e90677a21d3807bb01cd52144";
 
             Assert.AreEqual(prisijungimas.IsAdmin(username, password), "0");
 
@@ -51,7 +51,7 @@ namespace SveikatosSistema
         public void TestFirsttimeRegularUserJoined()
         {
             string username = "IHM";
-            string password = "0B2DD73369A685A3C76DE3245705FC75";
+            string password = "e24af509ba74471fef73aa95c3e58388d0d9252e90677a21d3807bb01cd52144";
 
             Assert.AreEqual(prisijungimas.Firsttime(username, password), "True");
 
@@ -60,7 +60,7 @@ namespace SveikatosSistema
         public void TestFirsttimeRegularUserNotJoined()
         {
             string username = "Administratorius";
-            string password = "EE97F9A911A6CE104036DADB183653C5";
+            string password = "e24af509ba74471fef73aa95c3e58388d0d9252e90677a21d3807bb01cd52144";
 
             Assert.AreEqual(prisijungimas.Firsttime(username, password), "False");
 
@@ -78,7 +78,7 @@ namespace SveikatosSistema
         public void TestUserLoginIDWithHash()
         {
             string username = "IHM";
-            string password = "0B2DD73369A685A3C76DE3245705FC75";
+            string password = "e24af509ba74471fef73aa95c3e58388d0d9252e90677a21d3807bb01cd52144";
 
             Assert.AreEqual(prisijungimas.UserloginID(username, password), "8");
 

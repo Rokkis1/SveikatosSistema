@@ -142,6 +142,7 @@ namespace SveikatosSistema
             {
                 MessageBox.Show("Nepavyko užmegzti ryšio su duomenų baze, kad būtų užkrautas vizualus duomenų atvaizdavimas, bandykite dar kartą");
             }
+            datos.Sort();
             var q = datos.GroupBy(x => x)
             .Select(g => new { Value = g.Key, Count = g.Count() })
             .OrderByDescending(x => x.Count);
