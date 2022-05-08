@@ -220,5 +220,10 @@ namespace SveikatosSistema
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void Sveikatospazymos_Load(object sender, EventArgs e)
+        {
+            duombaze();
+        }
     }
 }

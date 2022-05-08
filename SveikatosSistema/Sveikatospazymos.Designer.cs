@@ -65,7 +65,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.28455F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.38211F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 153F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 154F));
             this.tableLayoutPanel2.Controls.Add(this.btnOpenDB, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnSave, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnOpen, 2, 0);
@@ -89,7 +89,7 @@
             this.btnOpenDB.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnOpenDB.Location = new System.Drawing.Point(3, 3);
             this.btnOpenDB.Name = "btnOpenDB";
-            this.btnOpenDB.Size = new System.Drawing.Size(220, 20);
+            this.btnOpenDB.Size = new System.Drawing.Size(219, 20);
             this.btnOpenDB.TabIndex = 0;
             this.btnOpenDB.Text = "Atidaryti duomenų bazėje";
             this.btnOpenDB.UseVisualStyleBackColor = true;
@@ -98,9 +98,9 @@
             // btnSave
             // 
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSave.Location = new System.Drawing.Point(229, 3);
+            this.btnSave.Location = new System.Drawing.Point(228, 3);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(195, 20);
+            this.btnSave.Size = new System.Drawing.Size(194, 20);
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "Išsaugoti";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -109,7 +109,7 @@
             // btnOpen
             // 
             this.btnOpen.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOpen.Location = new System.Drawing.Point(430, 3);
+            this.btnOpen.Location = new System.Drawing.Point(428, 3);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(207, 20);
             this.btnOpen.TabIndex = 2;
@@ -123,23 +123,23 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(3, 29);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(220, 21);
+            this.comboBox1.Size = new System.Drawing.Size(219, 21);
             this.comboBox1.TabIndex = 3;
             // 
             // txtboxPicturename
             // 
             this.txtboxPicturename.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtboxPicturename.Location = new System.Drawing.Point(229, 29);
+            this.txtboxPicturename.Location = new System.Drawing.Point(228, 29);
             this.txtboxPicturename.Name = "txtboxPicturename";
-            this.txtboxPicturename.Size = new System.Drawing.Size(195, 20);
+            this.txtboxPicturename.Size = new System.Drawing.Size(194, 20);
             this.txtboxPicturename.TabIndex = 4;
             // 
             // btnBacktoMain
             // 
             this.btnBacktoMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnBacktoMain.Location = new System.Drawing.Point(643, 29);
+            this.btnBacktoMain.Location = new System.Drawing.Point(641, 29);
             this.btnBacktoMain.Name = "btnBacktoMain";
-            this.btnBacktoMain.Size = new System.Drawing.Size(148, 19);
+            this.btnBacktoMain.Size = new System.Drawing.Size(150, 19);
             this.btnBacktoMain.TabIndex = 5;
             this.btnBacktoMain.Text = "Grįžti";
             this.btnBacktoMain.UseVisualStyleBackColor = true;
@@ -148,7 +148,7 @@
             // btnDownload
             // 
             this.btnDownload.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnDownload.Location = new System.Drawing.Point(430, 29);
+            this.btnDownload.Location = new System.Drawing.Point(428, 29);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(207, 19);
             this.btnDownload.TabIndex = 6;
@@ -159,9 +159,9 @@
             // btnDelete
             // 
             this.btnDelete.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnDelete.Location = new System.Drawing.Point(643, 3);
+            this.btnDelete.Location = new System.Drawing.Point(641, 3);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(148, 20);
+            this.btnDelete.Size = new System.Drawing.Size(150, 20);
             this.btnDelete.TabIndex = 7;
             this.btnDelete.Text = "Ištrinti";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -187,6 +187,7 @@
             this.Name = "Sveikatospazymos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sveikatospazymos";
+            this.Load += new System.EventHandler(this.Sveikatospazymos_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
