@@ -48,7 +48,7 @@ namespace SveikatosSistema
                             {
                                 if (password == passwordrepeated)
                                 {
-                                    string hash = SHA_256Hash(password);
+                                    string hash = Bcrypt_hash(password);
                                     save(name, surname, formatted, username, hash);
                                     MessageBox.Show("Sukurta sėkmingai");
                                     this.Hide();
@@ -89,19 +89,11 @@ namespace SveikatosSistema
                 MessageBox.Show("Neįvestas vardas arba pavardė!");
             }
         }
-        public string SHA_256Hash(string input)
+        public string Bcrypt_hash(string input)
         {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes("kisonas1"));
+            string pass = BCrypt.Net.BCrypt.HashPassword(input);
 
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
+            return pass;
         }
 
         public bool UserValidator(string username)

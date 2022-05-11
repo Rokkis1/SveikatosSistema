@@ -29,13 +29,11 @@ namespace SveikatosSistema
         {
             username = LoginName.Text;
             password = PasswordName.Text;
-            string hash = SHA_256Hash(password);
-            Boolean validator;
-            validator = Userlogin(username, hash);
-            string userid = UserloginID(username, hash);
-            string firsttimer = Firsttime(username, hash);
-            string isadmin = IsAdmin(username, hash);
-            if (validator == true)
+            bool hash = Bcrypt_validator(password, username);
+            string userid = UserloginID(username);
+            string firsttimer = Firsttime(username);
+            string isadmin = IsAdmin(username);
+            if (hash == true)
             {
                 if (isadmin == "1")
                 {
@@ -59,7 +57,7 @@ namespace SveikatosSistema
                         result = MessageBox.Show(message, caption, buttons);
                         if (result == System.Windows.Forms.DialogResult.Yes)
                         {
-                            FirsttimeUpdated(username, hash);
+                            FirsttimeUpdated(username);
                             using (var menu = new Meniu())
                             {
                                 menu.userID(userid);
@@ -89,39 +87,26 @@ namespace SveikatosSistema
                 MessageBox.Show("Blogai įvestas slaptažodis arba slapyvardis");
             }
         }
-        public string SHA_256Hash(string input)
+        public bool Bcrypt_validator(string input, string username)
         {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes("kisonas1"));
- 
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
-        }
-
-        public bool Userlogin(string username, string password)
-        {
+            string usrn;
             string MySQLConnetionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=usersdb";
             try
             {
                 MySqlConnection databaseConnection = new MySqlConnection(MySQLConnetionString);
 
                 databaseConnection.Open();
-                MySqlCommand validatelogin = new MySqlCommand("SELECT * FROM registeredusers WHERE (Slapyvardis = @Slapyvardis) AND (Slaptažodis = @Slaptažodis)", databaseConnection);
+                MySqlCommand validatelogin = new MySqlCommand("SELECT * FROM registeredusers WHERE (Slapyvardis = @Slapyvardis)", databaseConnection);
                 validatelogin.Parameters.AddWithValue("@Slapyvardis", username);
-                validatelogin.Parameters.AddWithValue("@Slaptažodis", password);
+
                 MySqlDataReader reader = validatelogin.ExecuteReader();
                 while (reader.Read())
                 {
                     if (reader.HasRows)
                     {
-                        databaseConnection.Close();
-                        return true;
+                        usrn = reader.GetValue(3).ToString();
+                        bool verified = BCrypt.Net.BCrypt.Verify(input, usrn);
+                        return verified;
                     }
                     else
                     {
@@ -135,8 +120,10 @@ namespace SveikatosSistema
                 MessageBox.Show("Nepavyko užmegzti ryšio su duomenų baze, bandykite dar kartą");
             }
             return false;
+
         }
-        public void FirsttimeUpdated(string username, string password)
+
+        public void FirsttimeUpdated(string username)
         {
             string firsttime = "1";
             string MySQLConnetionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=usersdb";
@@ -145,9 +132,8 @@ namespace SveikatosSistema
                 MySqlConnection databaseConnection = new MySqlConnection(MySQLConnetionString);
 
                 databaseConnection.Open();
-                MySqlCommand cmd = new MySqlCommand(@"UPDATE `registeredusers` SET `Pirmaskartas` = @Pirmaskartas WHERE `Slapyvardis` = @Slapyvardis AND `Slaptažodis` = @Slaptažodis", databaseConnection);
+                MySqlCommand cmd = new MySqlCommand(@"UPDATE `registeredusers` SET `Pirmaskartas` = @Pirmaskartas WHERE `Slapyvardis` = @Slapyvardis", databaseConnection);
                 cmd.Parameters.AddWithValue("Pirmaskartas", firsttime);
-                cmd.Parameters.AddWithValue("Slaptažodis", password);
                 cmd.Parameters.AddWithValue("Slapyvardis", username);
 
                 cmd.ExecuteNonQuery();
@@ -159,7 +145,7 @@ namespace SveikatosSistema
                 MessageBox.Show("Nepavyko užmegzti ryšio su duomenų baze, bandykite dar kartą");
             }
         }
-        public string Firsttime(string username, string password)
+        public string Firsttime(string username)
         {
             string firsttime;
             string MySQLConnetionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=usersdb";
@@ -168,9 +154,9 @@ namespace SveikatosSistema
                 MySqlConnection databaseConnection = new MySqlConnection(MySQLConnetionString);
 
                 databaseConnection.Open();
-                MySqlCommand validatelogin = new MySqlCommand("SELECT Pirmaskartas FROM registeredusers WHERE (Slapyvardis = @Slapyvardis) AND (Slaptažodis = @Slaptažodis)", databaseConnection);
+                MySqlCommand validatelogin = new MySqlCommand("SELECT Pirmaskartas FROM registeredusers WHERE (Slapyvardis = @Slapyvardis)", databaseConnection);
                 validatelogin.Parameters.AddWithValue("@Slapyvardis", username);
-                validatelogin.Parameters.AddWithValue("@Slaptažodis", password);
+                //validatelogin.Parameters.AddWithValue("@Slaptažodis", password);
                 MySqlDataReader reader = validatelogin.ExecuteReader();
                 if (reader.HasRows)
                 {
@@ -186,7 +172,7 @@ namespace SveikatosSistema
             }
             return null;
         }
-        public string IsAdmin(string username, string password)
+        public string IsAdmin(string username)
         {
             string isadmin;
             string MySQLConnetionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=usersdb";
@@ -195,9 +181,9 @@ namespace SveikatosSistema
                 MySqlConnection databaseConnection = new MySqlConnection(MySQLConnetionString);
 
                 databaseConnection.Open();
-                MySqlCommand validatelogin = new MySqlCommand("SELECT Administratorius FROM registeredusers WHERE (Slapyvardis = @Slapyvardis) AND (Slaptažodis = @Slaptažodis)", databaseConnection);
+                MySqlCommand validatelogin = new MySqlCommand("SELECT Administratorius FROM registeredusers WHERE (Slapyvardis = @Slapyvardis)", databaseConnection);
                 validatelogin.Parameters.AddWithValue("@Slapyvardis", username);
-                validatelogin.Parameters.AddWithValue("@Slaptažodis", password);
+                //validatelogin.Parameters.AddWithValue("@Slaptažodis", password);
                 MySqlDataReader reader = validatelogin.ExecuteReader();
                 if (reader.HasRows)
                 {
@@ -213,7 +199,7 @@ namespace SveikatosSistema
             }
             return null;
         }
-        public string UserloginID(string username, string password)
+        public string UserloginID(string username)
         {
             string userid;
             string MySQLConnetionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=usersdb";
@@ -222,9 +208,9 @@ namespace SveikatosSistema
                 MySqlConnection databaseConnection = new MySqlConnection(MySQLConnetionString);
 
                 databaseConnection.Open();
-                MySqlCommand validatelogin = new MySqlCommand("SELECT VartotojoNR FROM registeredusers WHERE (Slapyvardis = @Slapyvardis) AND (Slaptažodis = @Slaptažodis)", databaseConnection);
+                MySqlCommand validatelogin = new MySqlCommand("SELECT VartotojoNR FROM registeredusers WHERE (Slapyvardis = @Slapyvardis)", databaseConnection);
                 validatelogin.Parameters.AddWithValue("@Slapyvardis", username);
-                validatelogin.Parameters.AddWithValue("@Slaptažodis", password);
+                //validatelogin.Parameters.AddWithValue("@Slaptažodis", password);
                 MySqlDataReader reader = validatelogin.ExecuteReader();
                 if (reader.HasRows)
                 {

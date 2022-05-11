@@ -14,73 +14,66 @@ namespace SveikatosSistema
         [Test]
         public void TestisAdminWithoutHash()
         {
-            string username = "IHMondays";
-            string password = "password";
+            string username = "IHMondaysas";
+            Assert.IsNull(prisijungimas.IsAdmin(username));
 
-            Assert.IsNull(prisijungimas.IsAdmin(username, password));
-            
         }
         [Test]
         public void TestisAdmintrue()
         {
             string username = "IHMondays";
-            string password = "e24af509ba74471fef73aa95c3e58388d0d9252e90677a21d3807bb01cd52144";
 
-            Assert.AreEqual(prisijungimas.IsAdmin(username, password), "1");
+            Assert.AreEqual(prisijungimas.IsAdmin(username), "1");
 
         }
         [Test]
         public void TestisAdminRegularUser()
         {
             string username = "IHM";
-            string password = "e24af509ba74471fef73aa95c3e58388d0d9252e90677a21d3807bb01cd52144";
 
-            Assert.AreEqual(prisijungimas.IsAdmin(username, password), "0");
+            Assert.AreEqual(prisijungimas.IsAdmin(username), "0");
 
         }
         [Test]
         public void TestFirsttimeWithoutHash()
         {
-            string username = "IHM";
-            string password = "password";
+            string username = "Administratoriusas";
 
-            Assert.IsNull(prisijungimas.Firsttime(username, password));
+            Assert.IsNull(prisijungimas.Firsttime(username));
 
         }
         [Test]
         public void TestFirsttimeRegularUserJoined()
         {
             string username = "IHM";
-            string password = "e24af509ba74471fef73aa95c3e58388d0d9252e90677a21d3807bb01cd52144";
 
-            Assert.AreEqual(prisijungimas.Firsttime(username, password), "True");
+            Assert.AreEqual(prisijungimas.Firsttime(username), "True");
 
         }
         [Test]
         public void TestFirsttimeRegularUserNotJoined()
         {
             string username = "Administratorius";
-            string password = "e24af509ba74471fef73aa95c3e58388d0d9252e90677a21d3807bb01cd52144";
 
-            Assert.AreEqual(prisijungimas.Firsttime(username, password), "False");
+            Assert.AreEqual(prisijungimas.Firsttime(username), "False");
 
         }
         [Test]
         public void TestUserLoginIDWithoutHash()
         {
-            string username = "IHM";
-            string password = "password";
+            string username = "IHMas";
 
-            Assert.IsNull(prisijungimas.UserloginID(username, password));
+
+            Assert.IsNull(prisijungimas.UserloginID(username));
 
         }
         [Test]
         public void TestUserLoginIDWithHash()
         {
             string username = "IHM";
-            string password = "e24af509ba74471fef73aa95c3e58388d0d9252e90677a21d3807bb01cd52144";
 
-            Assert.AreEqual(prisijungimas.UserloginID(username, password), "8");
+
+            Assert.AreEqual(prisijungimas.UserloginID(username), "8");
 
         }
     }

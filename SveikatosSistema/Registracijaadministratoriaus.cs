@@ -47,7 +47,7 @@ namespace SveikatosSistema
                             {
                                 if (password == passwordrepeated)
                                 {
-                                    string hash = CreateMD5Hash(password);
+                                    string hash = Bcrypt_hash(password);
                                     save(name, surname, formatted, username, hash);
                                     MessageBox.Show("Sukurta sėkmingai");
                                     this.Close();
@@ -83,18 +83,11 @@ namespace SveikatosSistema
                 MessageBox.Show("Neįvestas vardas arba pavardė!");
             }
         }
-        public string CreateMD5Hash(string input)
+        public string Bcrypt_hash(string input)
         {
-            System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-            byte[] hashBytes = md5.ComputeHash(inputBytes);
+            string pass = BCrypt.Net.BCrypt.HashPassword(input);
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hashBytes.Length; i++)
-            {
-                sb.Append(hashBytes[i].ToString("X2"));
-            }
-            return sb.ToString();
+            return pass;
         }
         public bool UserValidator(string username)
         {
