@@ -32,12 +32,9 @@ namespace SveikatosSistema
             newpassword = maskedTextBoxNewpw.Text;
             newpasswordrepeated = maskedTextBoxNewrepeatedpw.Text;
 
-            string oldhash = CreateMD5Hash(oldpassword);
+            bool oldhash = Bcrypt_validator(oldpassword, userid);
             Boolean match = ContainsNumber(newpassword);
-            Boolean pass = false;
-            pass = Userlogin(oldhash);
-
-            if (pass == true)
+            if (oldhash == true)
             {
                 if (oldpassword != newpassword)
                 {
@@ -45,7 +42,7 @@ namespace SveikatosSistema
                     {
                         if (newpassword == newpasswordrepeated)
                         {
-                            string hash = CreateMD5Hash(newpassword);
+                            string hash = Bcrypt_hash(newpassword);
                             update(userid, hash);
                             maskedTextBoxNewpw.Clear();
                             maskedTextBoxNewrepeatedpw.Clear();
@@ -96,50 +93,26 @@ namespace SveikatosSistema
             }
 
         }
-        public string CreateMD5Hash(string input)
+        public bool Bcrypt_validator(string input, string userid)
         {
-            System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
-            byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hashBytes.Length; i++)
-            {
-                sb.Append(hashBytes[i].ToString("X2"));
-            }
-            return sb.ToString();
-        }
-        public bool ContainsNumber(string password)
-        {
-            char[] numbers = "1234567890".ToCharArray();
-            foreach (var specialChar in numbers.Where(password.Contains))
-            {
-                return true;
-            }
-            return false;
-        }
-        public void userID(string identification)
-        {
-            userid = identification;
-        }
-        public bool Userlogin(string password)
-        {
+            string usrn;
             string MySQLConnetionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=usersdb";
             try
             {
                 MySqlConnection databaseConnection = new MySqlConnection(MySQLConnetionString);
 
                 databaseConnection.Open();
-                MySqlCommand validatelogin = new MySqlCommand("SELECT * FROM registeredusers WHERE (VartotojoNR = @VartotojoNR) AND (Slaptažodis = @Slaptažodis)", databaseConnection);
+                MySqlCommand validatelogin = new MySqlCommand("SELECT * FROM registeredusers WHERE (VartotojoNR = @VartotojoNR)", databaseConnection);
                 validatelogin.Parameters.AddWithValue("@VartotojoNR", userid);
-                validatelogin.Parameters.AddWithValue("@Slaptažodis", password);
+
                 MySqlDataReader reader = validatelogin.ExecuteReader();
                 while (reader.Read())
                 {
                     if (reader.HasRows)
                     {
-                        databaseConnection.Close();
-                        return true;
+                        usrn = reader.GetValue(3).ToString();
+                        bool verified = BCrypt.Net.BCrypt.Verify(input, usrn);
+                        return verified;
                     }
                     else
                     {
@@ -153,6 +126,26 @@ namespace SveikatosSistema
                 MessageBox.Show("Nepavyko užmegzti ryšio su duomenų baze, bandykite dar kartą");
             }
             return false;
+        }
+
+        public string Bcrypt_hash(string input)
+        {
+            string pass = BCrypt.Net.BCrypt.HashPassword(input);
+
+            return pass;
+        }
+        public bool ContainsNumber(string password)
+        {
+            char[] numbers = "1234567890".ToCharArray();
+            foreach (var specialChar in numbers.Where(password.Contains))
+            {
+                return true;
+            }
+            return false;
+        }
+        public void userID(string identification)
+        {
+            userid = identification;
         }
     }
 }

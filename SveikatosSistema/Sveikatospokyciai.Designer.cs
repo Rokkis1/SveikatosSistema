@@ -119,6 +119,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Sveikatospokyciai";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sveikatospokyciai";
             this.Load += new System.EventHandler(this.Sveikatospokyciai_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
